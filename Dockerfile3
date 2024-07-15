@@ -1,0 +1,26 @@
+# This is a dockerfile to run a .net application as a docker container.
+# Use the official .NET SDK image from the Docker Hub to build the application
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the .csproj and restore dependencies
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copy the remaining source code and build the application
+COPY . .
+RUN dotnet publish -c Release -o out
+
+# Use a smaller runtime image for the final stage
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS runtime
+
+# Set the working directory to where the application will be run
+WORKDIR /app
+
+# Copy the published output from the build stage
+COPY --from=build /app/out .
+
+# Specify the command to run on container start
+ENTRYPOINT ["dotnet", "your-application-name.dll"]

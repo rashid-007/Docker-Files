@@ -1,0 +1,8 @@
+# This is a dockerfile to run a node-js application as a docker container
+FROM node:14
+WORKDIR /app
+COPY package*.json /app/
+RUN npm install
+COPY . /app
+CMD ["node","app.js"]
+Expose 3000
