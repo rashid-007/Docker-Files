@@ -23,4 +23,4 @@ WORKDIR /app
 COPY --from=build /app/out .
 
 # Specify the command to run on container start
-ENTRYPOINT ["dotnet", "your-application-name.dll"]
+ENTRYPOINT ["dotnet", "application-name.dll"]
